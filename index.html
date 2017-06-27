@@ -22,6 +22,8 @@ var stars;
 var score = 0;
 var scoreText;
 var timeBeginning = Date.now();
+var timeTotal = 10000;
+var timeText;
 
 function preload() {
 
@@ -98,6 +100,7 @@ function create() {
     }
 
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    timeText  = game.add.text(600, 16, 'time: '+timeLeft(), { fontSize: '32px', fill: '#000' });
 }
 
 function update() {
@@ -142,7 +145,9 @@ function update() {
             player.body.velocity.y = -350;
         }
 
-        if (Date.now() - timeBeginning > 10000) {
+        timeText.text = 'time: ' + timeLeft();
+        if (timeLeft() <= 0) {
+            timeText.text = 'time: 0';
             end();
         }
     }
@@ -153,6 +158,10 @@ function stopPlayer() {
     player.animations.stop();
 
     player.frame = 4;
+}
+
+function timeLeft() {
+    return timeTotal - (Date.now() - timeBeginning);
 }
 
 function collectStar (player, star) {
